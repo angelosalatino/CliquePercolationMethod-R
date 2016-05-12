@@ -23,5 +23,10 @@ Called from: .Call("R_igraph_create", as.numeric(edges) - 1, as.numeric(n),
 The code here proposes a modified and working version with an example ready to be run.
 And yet, the implementation is still inefficient due to the clique algorithm. 
 
+It requires iGraph:
+```
+install.packages("igraph")
+```
+
 #Reference
 Palla, Gergely, Imre Derényi, Illés Farkas, and Tamás Vicsek. "Uncovering the overlapping community structure of complex networks in nature and society." Nature 435, no. 7043 (2005): 814-818.
