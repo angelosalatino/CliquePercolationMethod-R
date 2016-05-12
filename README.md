@@ -4,10 +4,10 @@ Clique Percolation Method (CPM) is a gephi plugin for finding overlapping commun
 #Algorithm
 The algorithm performs the following steps:
 
-1- first find all cliques of size k in the graph 
-2- then create graph where nodes are cliques of size k 
-3- add edges if two nodes (cliques) share k-1 common nodes 
-4- each connected component is a community
+1- first find all cliques of size k in the graph <br />
+2- then create graph where nodes are cliques of size k <br />
+3- add edges if two nodes (cliques) share k-1 common nodes <br />
+4- each connected component is a community <br />
 
 #Notes
 
