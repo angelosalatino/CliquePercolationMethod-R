@@ -8,8 +8,17 @@ clique.community <- function(graph, k) {
       }
     }
   }
-  clq.graph <- simplify(graph(edges))
-  V(clq.graph)$name <- seq_len(vcount(clq.graph))
+  clq.graph <- make_empty_graph()
+  if(length(edges)>0)
+  {
+    clq.graph <- simplify(graph(edges))
+    V(clq.graph)$name <- seq_len(vcount(clq.graph))
+  }else{
+    for(i in 1:length(clq)){
+      clq.graph <- clq.graph + vertices(i)
+    }
+  }
+  
   comps <- decompose.graph(clq.graph)
   
   lapply(comps, function(x) {
