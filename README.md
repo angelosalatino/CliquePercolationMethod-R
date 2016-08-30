@@ -14,6 +14,12 @@ The algorithm performs the following steps:
 * __clique.community.opt.R__ : Optimized version with reduction of search space (see section *Optimizations*)
 * __clique.community.opt.par.R__ : Optimization via parallelization (see section *Optimizations*)
  
+It requires iGraph:
+```
+install.packages("igraph")
+install.packages("doParallel")
+install.packages("foreach")
+```
 
 #Notes [Bug Fix]
 ##Non-negative Vertex Id
@@ -30,10 +36,6 @@ Called from: .Call("R_igraph_create", as.numeric(edges) - 1, as.numeric(n),
 The code here proposes a modified and working version with an example ready to be run.
 And yet, the implementation is still inefficient due to the clique algorithm. 
 
-It requires iGraph:
-```
-install.packages("igraph")
-```
 
 ##Clique-Graph
 In the previous version, the graph was created using the edge list: *clq.graph <- simplify(graph(edges))* and then simplified. However, when performing the *clique()* function, some isolated cliques may appear (cliques that don't share k-1 nodes with others cliques). Relying on the previous version, isolated cliques and therefore cliques without any edge do not appear in the final computed clique graph. 
