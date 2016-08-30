@@ -1,12 +1,41 @@
 library(igraph)
-source("c")
+library(doParallel)
 
+
+source("clique.community.R") #non-optimized implementation
+source("clique.community.opt.R") #optimized implementation
+source("clique.community.opt.par.R") #parallelised implementation
+
+
+### Register Parallelisation (used by clique.community.opt.par())
+cl <- makeCluster(4)
+registerDoParallel(cl)
+getDoParWorkers()
+
+
+### Loading Benchmarks
+#1 
 g <- graph(c(1,2,1,3,1,4,2,3,3,4,4,5,4,6,5,6,5,8,5,7,6,8,6,7,7,8,7,9), directed=F)
-plot(g)
+#2
+g <- make_graph("Zachary") #the karate network
 
 
-res<-clique.community(g,3)
+#Execution of the different implementation of the algorithm
+ptm <- proc.time()
+res1<-clique.community(g,3)
+proc.time() - ptm
+ptm <- proc.time()
+res2<-clique.community.opt(g,3)
+proc.time() - ptm
+ptm <- proc.time()
+res3<-clique.community.opt.par(g,3)
+proc.time() - ptm
 
+
+### PLOT
+
+#which one? the outcome is always the same
+res <- res3
 
 ## Paint them to different colors
 colbar <- rainbow( length(res)+1 )
@@ -19,3 +48,4 @@ V(g)[ unlist(res)[ duplicated(unlist(res)) ] ]$color <- "red"
 
 ## Plot with the new colors
 plot(g, layout=layout_with_fr, vertex.label=V(g)$name)
+
