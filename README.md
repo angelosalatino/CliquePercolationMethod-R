@@ -1,5 +1,5 @@
 # CliquePercolationMethod-R
-Clique Percolation Method (CPM) is a gephi plugin for finding overlapping communities. This method is used for finding overlapping communities, firstly by detecting communities of size k, then forming a clique graph based of cliques of size k. This plugin is designed to work with Gephi and will transform a graph to the clique graph of size k.
+Clique Percolation Method (CPM) is an algorithm for finding overlapping communities within networks, intruduced by Palla et al. (2005, see references). This implementation in R, firstly detects communities of size k, then creates a clique graph. Each community will be represented by each connected component in the clique graph.
 
 #Algorithm
 The algorithm performs the following steps:
@@ -9,38 +9,44 @@ The algorithm performs the following steps:
 3- add edges if two nodes (cliques) share k-1 common nodes <br />
 4- each connected component is a community <br />
 
-#Notes [Bug Fix]
-##1
-An old and rather inefficient implementation of this algorithm can be found here: http://igraph.wikidot.com/community-detection-in-r#toc0
-However, since version 0.6, vertices and edge are indexed from one in R iGraph and then that implementation produces the following error:
-```
-Error in .Call("R_igraph_create", as.numeric(edges) - 1, as.numeric(n),  : 
-  At type_indexededgelist.c:117 : cannot create empty graph with negative number of vertices, Invalid value
-In addition: Warning message:
-In max(edges) : no non-missing arguments to max; returning -Inf
-Called from: .Call("R_igraph_create", as.numeric(edges) - 1, as.numeric(n), 
-    as.logical(directed), PACKAGE = "igraph")
-```
-The code here proposes a modified and working version with an example ready to be run.
-And yet, the implementation is still inefficient due to the clique algorithm. 
-
-It requires iGraph:
+#Main Implementations
+* __clique.community.R__ : Basic implementation with some bug fix from an old version (see section *Notes*)
+* __clique.community.opt.R__ : Optimized version with reduction of search space (see section *Optimizations*)
+* __clique.community.opt.par.R__ : Optimization via parallelization (see section *Optimizations*)
+ 
+It requires:
 ```
 install.packages("igraph")
+install.packages("doParallel")
+install.packages("foreach")
 ```
 
-##2
-In the previous version, the graph was created using the edge list: *clq.graph <- simplify(graph(edges))* and then simplified. However, when performing the *clique()* function, some isolated cliques may appear (cliques that don't share k-1 nodes with others cliques). Relying on the previous version, isolated cliques and therefore cliques without any edge do not appear in the final computed clique graph. 
-In some extreme cases, when the *edges* structure is empty (every clique is not connected with others), the algorithm generates the following error:
+#Manual and other info
+Please refer to this web page for more info about this implemetation: http://infernusweb.altervista.org/wp/?p=1479
+
+
+#Results on an experiment
+Using the Zachary network as a benchmark, and running the three implementations on a Processor	Intel(R) Core(TM) i7-3630QM CPU @ 2.40GHz, 2401 Mhz, 4 Core(s), 8 Logical Processor(s), it is possible to compare the elapsed of the different implementations:
 ```
-Error in .Call("R_igraph_create", as.numeric(edges) - 1, as.numeric(n),  : 
-  At type_indexededgelist.c:117 : cannot create empty graph with negative number of vertices, Invalid value
-In addition: Warning message:
-In max(edges) : no non-missing arguments to max; returning -Inf
-Called from: .Call("R_igraph_create", as.numeric(edges) - 1, as.numeric(n), 
-    as.logical(directed), PACKAGE = "igraph")
+> g <- make_graph("Zachary") #the karate network
+> #Execution of the different implementation of the algorithm
+> ptm <- proc.time()
+> res1<-clique.community(g,3)
+> proc.time() - ptm
+   user  system elapsed 
+   3.47    0.02    3.49 
+> ptm <- proc.time()
+> res2<-clique.community.opt(g,3)
+> proc.time() - ptm
+   user  system elapsed 
+   1.78    0.00    1.78 
+> ptm <- proc.time()
+> res3<-clique.community.opt.par(g,3)
+> proc.time() - ptm
+   user  system elapsed 
+   0.06    0.00    0.09 
 ```
-In this new version, the graph is created inserting the right amount of vertexes and then all the edges. In this way, we avoid to lose nodes (cliques without edges), that can represent communities.
+
 
 #Reference
 Palla, Gergely, Imre Derényi, Illés Farkas, and Tamás Vicsek. "Uncovering the overlapping community structure of complex networks in nature and society." Nature 435, no. 7043 (2005): 814-818.
