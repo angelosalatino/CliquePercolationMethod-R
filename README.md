@@ -1,5 +1,5 @@
 # CliquePercolationMethod-R
-Clique Percolation Method (CPM) is a gephi plugin for finding overlapping communities. This method is used for finding overlapping communities, firstly by detecting communities of size k, then forming a clique graph based of cliques of size k. This plugin is designed to work with Gephi and will transform a graph to the clique graph of size k.
+Clique Percolation Method (CPM) is an algorithm for finding overlapping communities within networks, intruduced by Palla et al. (2005, see references). This implementation in R, firstly detects communities of size k, then creates a clique graph based of cliques of size k. 
 
 #Algorithm
 The algorithm performs the following steps:
