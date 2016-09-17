@@ -21,7 +21,7 @@ clique.community.opt <- function(graph, k){
     }
   }
   
-  #Create a new graph with the 
+  #Create an empty graph and then adding edges
   clq.graph <- make_empty_graph(n = length(clq)) %>% add_edges(edges)
   clq.graph <- simplify(clq.graph)
   V(clq.graph)$name <- seq_len(vcount(clq.graph))
