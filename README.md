@@ -1,5 +1,5 @@
 # CliquePercolationMethod-R
-Clique Percolation Method (CPM) is an algorithm for finding overlapping communities within networks, intruduced by Palla et al. (2005, see references). This implementation in R, firstly detects communities of size k, then creates a clique graph based of cliques of size k. 
+Clique Percolation Method (CPM) is an algorithm for finding overlapping communities within networks, intruduced by Palla et al. (2005, see references). This implementation in R, firstly detects communities of size k, then creates a clique graph. Each community will represent each connected component in the clique graph.
 
 #Algorithm
 The algorithm performs the following steps:
