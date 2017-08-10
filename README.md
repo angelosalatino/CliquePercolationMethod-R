@@ -11,8 +11,8 @@ The algorithm performs the following steps:
 
 # Main Implementations
 * __clique.community.R__ : Basic implementation with some bug fix from an old version (see section *Notes*)
-* __clique.community.opt.R__ : Optimized version with reduction of search space (see section *Optimizations*)
-* __clique.community.opt.par.R__ : Optimization via parallelization (see section *Optimizations*)
+* __clique.community.opt.R__ : Optimized version with reduction of search space (see section *Notes*)
+* __clique.community.opt.par.R__ : Optimization via parallelization (see section *Notes*)
  
 It requires:
 ```
@@ -21,8 +21,8 @@ install.packages("doParallel")
 install.packages("foreach")
 ```
 
-# Manual and other info
-Please refer to this web page for more info about this implemetation: http://infernusweb.altervista.org/wp/?p=1479
+# Further Notes
+Additional info about this implemetation is available on: http://infernusweb.altervista.org/wp/?p=1479
 
 
 # Results on an experiment
