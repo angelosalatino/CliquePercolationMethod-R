@@ -1,7 +1,7 @@
 # CliquePercolationMethod-R
 Clique Percolation Method (CPM) is an algorithm for finding overlapping communities within networks, intruduced by Palla et al. (2005, see references). This implementation in R, firstly detects communities of size k, then creates a clique graph. Each community will be represented by each connected component in the clique graph.
 
-#Algorithm
+# Algorithm
 The algorithm performs the following steps:
 
 1- first find all cliques of size k in the graph <br />
@@ -9,7 +9,7 @@ The algorithm performs the following steps:
 3- add edges if two nodes (cliques) share k-1 common nodes <br />
 4- each connected component is a community <br />
 
-#Main Implementations
+# Main Implementations
 * __clique.community.R__ : Basic implementation with some bug fix from an old version (see section *Notes*)
 * __clique.community.opt.R__ : Optimized version with reduction of search space (see section *Optimizations*)
 * __clique.community.opt.par.R__ : Optimization via parallelization (see section *Optimizations*)
@@ -21,11 +21,11 @@ install.packages("doParallel")
 install.packages("foreach")
 ```
 
-#Manual and other info
+# Manual and other info
 Please refer to this web page for more info about this implemetation: http://infernusweb.altervista.org/wp/?p=1479
 
 
-#Results on an experiment
+# Results on an experiment
 Using the Zachary network as a benchmark, and running the three implementations on a Processor	Intel(R) Core(TM) i7-3630QM CPU @ 2.40GHz, 2401 Mhz, 4 Core(s), 8 Logical Processor(s), it is possible to compare the elapsed of the different implementations:
 ```
 > g <- make_graph("Zachary") #the karate network
@@ -48,5 +48,5 @@ Using the Zachary network as a benchmark, and running the three implementations 
 ```
 
 
-#Reference
+# Reference
 Palla, Gergely, Imre Derényi, Illés Farkas, and Tamás Vicsek. "Uncovering the overlapping community structure of complex networks in nature and society." Nature 435, no. 7043 (2005): 814-818.
