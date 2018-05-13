@@ -1,10 +1,11 @@
 clique.community.opt <- function(graph, k){
+	require(igraph)
 
   ###################################
   ### STEP #1: Clique discovery
   ###################################
   
-  clq <- cliques(graph, min=k, max=k)
+  clq <- cliques(graph, min=k, max=k) %>% lapply(as.vector)
 
   
   ###################################
@@ -16,13 +17,13 @@ clique.community.opt <- function(graph, k){
   for (i in 1:(length(clq)-1)) {
     for (j in (i+1):length(clq)) {
       if ( length(unique(c(clq[[i]], clq[[j]]))) == k+1 ) {
-        edges <- c(edges, c(i,j))
+        edges[[length(edges)+1]] <- c(i,j)
       }
     }
   }
   
   #Create an empty graph and then adding edges
-  clq.graph <- make_empty_graph(n = length(clq)) %>% add_edges(edges)
+  clq.graph <- make_empty_graph(n = length(clq)) %>% add_edges(unlist(edges))
   clq.graph <- simplify(clq.graph)
   V(clq.graph)$name <- seq_len(vcount(clq.graph))
   
