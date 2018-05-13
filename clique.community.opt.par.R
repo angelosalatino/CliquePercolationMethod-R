@@ -1,5 +1,5 @@
 clique.community.opt.par <- function(graph, k){
-  
+  require(igraph)
   if(!require(foreach)){
     install.packages("foreach")
     library(foreach)
@@ -9,7 +9,7 @@ clique.community.opt.par <- function(graph, k){
   ### STEP #1: Clique discovery
   ###################################
 
-  clq <- cliques(graph, min=k, max=k)
+  clq <- cliques(graph, min=k, max=k) %>% lapply(as.vector)
   
   
   ###################################
@@ -20,17 +20,18 @@ clique.community.opt.par <- function(graph, k){
   edges <- c()
   edges <- foreach (i=1:(length(clq)-1), .combine=c) %dopar% 
   {
-    tmp_edg <- c()
+    tmp_edg <- list()
     for (j in (i+1):length(clq)) {
       if ( length(unique(c(clq[[i]], clq[[j]]))) == k+1 ) {
-        tmp_edg <- c(tmp_edg, c(i,j))
+        tmp_edg[[length(tmp_edg)+1]] <- c(i,j)
+        #tmp_edg <- c(tmp_edg, c(i,j))
       }
     }
     return(tmp_edg)
   }
 
   #Create an empty graph and then adding edges
-  clq.graph <- make_empty_graph(n = length(clq)) %>% add_edges(edges)
+  clq.graph <- make_empty_graph(n = length(clq)) %>% add_edges(unlist(edges))
   clq.graph <- simplify(clq.graph)
   V(clq.graph)$name <- seq_len(vcount(clq.graph))
   

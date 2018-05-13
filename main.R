@@ -31,6 +31,9 @@ ptm <- proc.time()
 res3<-clique.community.opt.par(g,3)
 proc.time() - ptm
 
+identical(res1,res2)
+identical(res2,res3)
+
 
 ### PLOT
 
@@ -49,3 +52,13 @@ V(g)[ unlist(res)[ duplicated(unlist(res)) ] ]$color <- "red"
 ## Plot with the new colors
 plot(g, layout=layout_with_fr, vertex.label=V(g)$name)
 
+
+#REAL PERFORMANCE TEST
+require(microbenchmark)
+b1<-microbenchmark(t1<-clique.community(g,3),times = 100,unit = 'ms')
+b2<-microbenchmark(t2<-clique.community.opt(g,3),times = 100,unit = 'ms')
+b3<-microbenchmark(t2<-clique.community.opt.par(g,3),times = 100,unit = 'ms')
+rbind(b1,b2,b3)
+mean(b1$time)/mean(b2$time)
+mean(b2$time)/mean(b3$time)
+mean(b1$time)/mean(b3$time)
